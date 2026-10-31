@@ -1,0 +1,23 @@
+# 依赖与构建产物
+node_modules
+dist
+coverage
+*.tsbuildinfo
+
+# 本地配置与密钥（必须通过 env_file / 环境变量注入）
+.env
+.env.*
+!.env.example
+
+# 版本控制与编辑器
+.git
+.gitignore
+.idea
+.vscode
+
+# 文档、测试与开发辅助（运行镜像不需要）
+docs
+tests
+vitest.config.ts
+*.md
+*.log

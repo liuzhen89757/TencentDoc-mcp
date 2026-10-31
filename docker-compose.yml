@@ -1,0 +1,26 @@
+services:
+  tencent-doc-smartbook-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tencent-doc-smartbook-mcp:0.1.0
+    container_name: tencent-doc-smartbook-mcp
+    env_file:
+      # .env 不存在时仍可启动（工具会返回 CONFIG_MISSING）；
+      # 正式部署请 `cp .env.example .env` 并填写凭证。
+      - path: .env
+        required: false
+    ports:
+      # 容器内监听 HTTP_PORT（默认 3000），宿主机默认映射同一端口
+      - "${HTTP_PORT:-3000}:${HTTP_PORT:-3000}"
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "node -e \"fetch('http://127.0.0.1:'+(process.env.HTTP_PORT||3000)+'/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\"",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
